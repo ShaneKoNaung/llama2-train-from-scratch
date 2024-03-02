@@ -92,7 +92,7 @@ class Task:
     def iter_batches(batch_size, device, num_workers=0, **dataset_kwargs):
         ds = PretokDataset(**dataset_kwargs)
         dl = torch.utils.data.DataLoader(
-            ds, batch_size=batch_size, pin_memory=True, num_workers=num_workers
+            ds, batch_size=batch_size, pin_memory=False, num_workers=num_workers
         )
         for x, y in dl:
             x = x.to(device, non_blocking=True)
