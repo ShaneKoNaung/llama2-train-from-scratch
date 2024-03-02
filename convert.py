@@ -176,6 +176,14 @@ class Params:
 
     @staticmethod
     def guessed(model: LazyModel) -> Params:
+        
+        # fix the keys of the state dictionary :(
+        # honestly no idea how checkpoints sometimes get this prefix, have to debug more
+        unwanted_prefix = "_orig_mod."
+        for k, v in list(model.items()):
+            if k.startswith(unwanted_prefix):
+                model[k[len(unwanted_prefix) :]] = model.pop(k)
+
         # try transformer naming first
         n_vocab, n_embd = model["model.embed_tokens.weight"].shape if "model.embed_tokens.weight" in model else model["tok_embeddings.weight"].shape
 
