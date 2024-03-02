@@ -1,3 +1,5 @@
 .ipynb*
 __*__
 *.ipynb
+*.bin
+*pt
