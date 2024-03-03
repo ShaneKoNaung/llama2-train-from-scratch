@@ -204,6 +204,10 @@ python convert.py out_thai/ --ctx 4096
 
 
 ### Llama2 pytorch
+
+change `out_dir` in [generate_text.py](generate_text.py) 
+
+#### Tiny Shakespeare
 ```
 python generate_text.py
 
@@ -213,7 +217,21 @@ LADY ANNE: Set down, set down your honourable load, If honour may be shrouded in
 ---------------
 ```
 
+#### Prachathai67k
+
+```
+python generate_text.py
+
+#output
+compiling the model... (takes a ~minute)
+สมช.ประกาศแจงเหตุ 6 ต.ค.นนี้ หนุนร่าง พ.ร.บ. ฉบับนนี้ เหตุเผชิญกับการแถลงข่าว กรณีทที่กลลุ่ม สมช. ไม่เห็นชอบร่าง พ.ร.บ.ฉบับนนี้ ไม่จำเป็นต้องให้ สนช. เปิดรับฟังความคิดเห็นของประชาชน พร้อมท
+ 18 ม.
+---------------
+```
+
 ### Llama2.c bin
+
+#### Tiny Shakespeare
 
 ```
 ./run out/model.bin
@@ -225,10 +243,23 @@ And Romeo dead; and Juliet, dead before,
 achieved tok/s: 76.023392
 ```
 
-### llama2.c bin to ggml
+#### Prachathai67k
 
 ```
-./main -m out/llama2c-ggml.bin -n 256 -t 0.7 --log-disable
+./run out_thai/model.bin
+
+#output
+ความเคลลื่อนไหวดังกล่าว จัดรณรงค์ดังกล่าวนวันนนี้ เมมื่อวันทที่ 15 มกราคม 2549 โดยเรริ่มทที่สานีวิทยุกระจายเสียงแห่งประเทศไทย         27 มกราคม 2551   ทที่มาภาพ: สำนักข่าวไทย    ู้สสื่อข่า
+ แห่งประเทศไท politics
+achieved tok/s: 73.891626
+```
+
+### llama2.c bin to ggml
+
+#### Tiny Shakespeare
+
+```
+./main -m out/llama2c-ggml.bin -n 256 -t 0.7
 
 Log start
 main: build = 2295 (87c91c07)
@@ -330,7 +361,114 @@ llama_print_timings:       total time =      58.27 ms /    13 tokens
 Log end
 ```
 
+#### Prachathai67k
+
+
+```
+./main -m out_thai/llama2c-ggml.bin -n 256 -t 0.7 
+
+Log start
+main: build = 2295 (87c91c07)
+main: built with cc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0 for x86_64-linux-gnu
+main: seed  = 1709504025
+llama_model_loader: loaded meta data with 18 key-value pairs and 57 tensors from out_thai/llama2c-ggml.bin (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                      tokenizer.ggml.tokens arr[str,32000]   = ["<unk>", "<s>", "</s>", "<0x00>", "<...
+llama_model_loader: - kv   1:                      tokenizer.ggml.scores arr[f32,32000]   = [0.000000, 0.000000, 0.000000, 0.0000...
+llama_model_loader: - kv   2:                  tokenizer.ggml.token_type arr[i32,32000]   = [2, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, ...
+llama_model_loader: - kv   3:                       tokenizer.ggml.model str              = llama
+llama_model_loader: - kv   4:                       general.architecture str              = llama
+llama_model_loader: - kv   5:                               general.name str              = llama
+llama_model_loader: - kv   6:            tokenizer.ggml.unknown_token_id u32              = 0
+llama_model_loader: - kv   7:                tokenizer.ggml.bos_token_id u32              = 1
+llama_model_loader: - kv   8:                tokenizer.ggml.eos_token_id u32              = 2
+llama_model_loader: - kv   9:          tokenizer.ggml.seperator_token_id u32              = 4294967295
+llama_model_loader: - kv  10:            tokenizer.ggml.padding_token_id u32              = 4294967295
+llama_model_loader: - kv  11:                       llama.context_length u32              = 128
+llama_model_loader: - kv  12:                     llama.embedding_length u32              = 288
+llama_model_loader: - kv  13:                  llama.feed_forward_length u32              = 768
+llama_model_loader: - kv  14:                 llama.attention.head_count u32              = 6
+llama_model_loader: - kv  15:                          llama.block_count u32              = 6
+llama_model_loader: - kv  16:                 llama.rope.dimension_count u32              = 48
+llama_model_loader: - kv  17:     llama.attention.layer_norm_rms_epsilon f32              = 0.000010
+llama_model_loader: - type  f32:   57 tensors
+llm_load_vocab: bad special token: 'tokenizer.ggml.seperator_token_id' = 4294967295d, using default id -1
+llm_load_vocab: bad special token: 'tokenizer.ggml.padding_token_id' = 4294967295d, using default id -1
+llm_load_vocab: special tokens definition check successful ( 259/32000 ).
+llm_load_print_meta: format           = GGUF V3 (latest)
+llm_load_print_meta: arch             = llama
+llm_load_print_meta: vocab type       = SPM
+llm_load_print_meta: n_vocab          = 32000
+llm_load_print_meta: n_merges         = 0
+llm_load_print_meta: n_ctx_train      = 128
+llm_load_print_meta: n_embd           = 288
+llm_load_print_meta: n_head           = 6
+llm_load_print_meta: n_head_kv        = 6
+llm_load_print_meta: n_layer          = 6
+llm_load_print_meta: n_rot            = 48
+llm_load_print_meta: n_embd_head_k    = 48
+llm_load_print_meta: n_embd_head_v    = 48
+llm_load_print_meta: n_gqa            = 1
+llm_load_print_meta: n_embd_k_gqa     = 288
+llm_load_print_meta: n_embd_v_gqa     = 288
+llm_load_print_meta: f_norm_eps       = 0.0e+00
+llm_load_print_meta: f_norm_rms_eps   = 1.0e-05
+llm_load_print_meta: f_clamp_kqv      = 0.0e+00
+llm_load_print_meta: f_max_alibi_bias = 0.0e+00
+llm_load_print_meta: n_ff             = 768
+llm_load_print_meta: n_expert         = 0
+llm_load_print_meta: n_expert_used    = 0
+llm_load_print_meta: pooling type     = 0
+llm_load_print_meta: rope type        = 0
+llm_load_print_meta: rope scaling     = linear
+llm_load_print_meta: freq_base_train  = 10000.0
+llm_load_print_meta: freq_scale_train = 1
+llm_load_print_meta: n_yarn_orig_ctx  = 128
+llm_load_print_meta: rope_finetuned   = unknown
+llm_load_print_meta: model type       = ?B
+llm_load_print_meta: model ftype      = all F32 (guessed)
+llm_load_print_meta: model params     = 24.41 M
+llm_load_print_meta: model size       = 93.11 MiB (32.00 BPW)
+llm_load_print_meta: general.name     = llama
+llm_load_print_meta: BOS token        = 1 '<s>'
+llm_load_print_meta: EOS token        = 2 '</s>'
+llm_load_print_meta: UNK token        = 0 '<unk>'
+llm_load_print_meta: LF token         = 13 '<0x0A>'
+llm_load_tensors: ggml ctx size =    0.02 MiB
+llm_load_tensors:        CPU buffer size =    93.11 MiB
+...........................
+llama_new_context_with_model: n_ctx      = 512
+llama_new_context_with_model: freq_base  = 10000.0
+llama_new_context_with_model: freq_scale = 1
+llama_kv_cache_init:        CPU KV buffer size =     3.38 MiB
+llama_new_context_with_model: KV self size  =    3.38 MiB, K (f16):    1.69 MiB, V (f16):    1.69 MiB
+llama_new_context_with_model:        CPU input buffer size   =     2.57 MiB
+llama_new_context_with_model:        CPU compute buffer size =    63.06 MiB
+llama_new_context_with_model: graph splits (measure): 1
+main: warning: model was trained on only 128 context tokens (512 specified)
+
+system_info: n_threads = 8 / 8 | AVX = 1 | AVX_VNNI = 0 | AVX2 = 1 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 1 | NEON = 0 | ARM_FMA = 0 | F16C = 1 | FP16_VA = 0 | WASM_SIMD = 0 | BLAS = 0 | SSE3 = 1 | SSSE3 = 1 | VSX = 0 | MATMUL_INT8 = 0 |
+sampling:
+        repeat_last_n = 64, repeat_penalty = 1.100, frequency_penalty = 0.000, presence_penalty = 0.000
+        top_k = 40, tfs_z = 1.000, top_p = 0.950, min_p = 0.050, typical_p = 1.000, temp = 0.800
+        mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000
+sampling order:
+CFG -> Penalties -> top_k -> tfs_z -> typical_p -> top_p -> min_p -> temperature
+generate: n_ctx = 512, n_batch = 512, n_predict = 256, n_keep = 1
+
+
+ ประเทศไทยเสี่ยงร่ำรวย  กับ กฟผ.ใหม่ของ พ.ต.ท.ทักษิณ ชินวัตร  ก่อนคลอด ก็เสี่ยงที่จะเป็น กฟผ. ไทยพาณิชย์  โดยเฉพาะน้ำมันแพงขนาดเล็ก  แต่ในปี 2549  ส่วนชาวบ้านเริ่มยอมรับกับกฟผ.ที่จะรื้อฝายพริ้งตามธรรมชาติแล้ว  การให้ กฟผ.ชี้แจงว่า การ
+llama_print_timings:        load time =      16.97 ms
+llama_print_timings:      sample time =      68.59 ms /   256 runs   (    0.27 ms per token,  3732.21 tokens per second)
+llama_print_timings: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_print_timings:        eval time =    1178.47 ms /   256 runs   (    4.60 ms per token,   217.23 tokens per second)
+llama_print_timings:       total time =    1356.62 ms /   257 tokens
+Log end
+```
+
 ### llama.cpp GGUF
+
+#### Tiny Shakespeare
 
 ```
 ./main -m out/ggml-model-f32.gguf -n 256 --temp 0.7 
@@ -425,5 +563,103 @@ llama_print_timings:      sample time =       6.23 ms /    23 runs   (    0.27 m
 llama_print_timings: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
 llama_print_timings:        eval time =      69.67 ms /    23 runs   (    3.03 ms per token,   330.13 tokens per second)
 llama_print_timings:       total time =      87.30 ms /    24 tokens
+Log end
+```
+
+#### Prachathai67k
+
+```
+./main -m out_thai/ggml-model-f32.gguf -n 256 --temp 0.7
+
+Log start
+main: build = 2295 (87c91c07)
+main: built with cc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0 for x86_64-linux-gnu
+main: seed  = 1709504578
+llama_model_loader: loaded meta data with 15 key-value pairs and 57 tensors from out_thai/ggml-model-f32.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = llama
+llama_model_loader: - kv   1:                               general.name str              = LLaMA v2
+llama_model_loader: - kv   2:                       llama.context_length u32              = 4096
+llama_model_loader: - kv   3:                     llama.embedding_length u32              = 288
+llama_model_loader: - kv   4:                          llama.block_count u32              = 6
+llama_model_loader: - kv   5:                  llama.feed_forward_length u32              = 768
+llama_model_loader: - kv   6:                 llama.rope.dimension_count u32              = 48
+llama_model_loader: - kv   7:                 llama.attention.head_count u32              = 6
+llama_model_loader: - kv   8:              llama.attention.head_count_kv u32              = 6
+llama_model_loader: - kv   9:     llama.attention.layer_norm_rms_epsilon f32              = 0.000010
+llama_model_loader: - kv  10:                          general.file_type u32              = 0
+llama_model_loader: - kv  11:                       tokenizer.ggml.model str              = llama
+llama_model_loader: - kv  12:                      tokenizer.ggml.tokens arr[str,32000]   = ["<unk>", "<s>", "</s>", "<0x00>", "<...
+llama_model_loader: - kv  13:                      tokenizer.ggml.scores arr[f32,32000]   = [0.000000, 0.000000, 0.000000, 0.0000...
+llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr[i32,32000]   = [2, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, ...
+llama_model_loader: - type  f32:   57 tensors
+llm_load_vocab: special tokens definition check successful ( 259/32000 ).
+llm_load_print_meta: format           = GGUF V3 (latest)
+llm_load_print_meta: arch             = llama
+llm_load_print_meta: vocab type       = SPM
+llm_load_print_meta: n_vocab          = 32000
+llm_load_print_meta: n_merges         = 0
+llm_load_print_meta: n_ctx_train      = 4096
+llm_load_print_meta: n_embd           = 288
+llm_load_print_meta: n_head           = 6
+llm_load_print_meta: n_head_kv        = 6
+llm_load_print_meta: n_layer          = 6
+llm_load_print_meta: n_rot            = 48
+llm_load_print_meta: n_embd_head_k    = 48
+llm_load_print_meta: n_embd_head_v    = 48
+llm_load_print_meta: n_gqa            = 1
+llm_load_print_meta: n_embd_k_gqa     = 288
+llm_load_print_meta: n_embd_v_gqa     = 288
+llm_load_print_meta: f_norm_eps       = 0.0e+00
+llm_load_print_meta: f_norm_rms_eps   = 1.0e-05
+llm_load_print_meta: f_clamp_kqv      = 0.0e+00
+llm_load_print_meta: f_max_alibi_bias = 0.0e+00
+llm_load_print_meta: n_ff             = 768
+llm_load_print_meta: n_expert         = 0
+llm_load_print_meta: n_expert_used    = 0
+llm_load_print_meta: pooling type     = 0
+llm_load_print_meta: rope type        = 0
+llm_load_print_meta: rope scaling     = linear
+llm_load_print_meta: freq_base_train  = 10000.0
+llm_load_print_meta: freq_scale_train = 1
+llm_load_print_meta: n_yarn_orig_ctx  = 4096
+llm_load_print_meta: rope_finetuned   = unknown
+llm_load_print_meta: model type       = ?B
+llm_load_print_meta: model ftype      = all F32
+llm_load_print_meta: model params     = 24.41 M
+llm_load_print_meta: model size       = 93.11 MiB (32.00 BPW)
+llm_load_print_meta: general.name     = LLaMA v2
+llm_load_print_meta: BOS token        = 1 '<s>'
+llm_load_print_meta: EOS token        = 2 '</s>'
+llm_load_print_meta: UNK token        = 0 '<unk>'
+llm_load_print_meta: LF token         = 13 '<0x0A>'
+llm_load_tensors: ggml ctx size =    0.02 MiB
+llm_load_tensors:        CPU buffer size =    93.11 MiB
+...........................
+llama_new_context_with_model: n_ctx      = 512
+llama_new_context_with_model: freq_base  = 10000.0
+llama_new_context_with_model: freq_scale = 1
+llama_kv_cache_init:        CPU KV buffer size =     3.38 MiB
+llama_new_context_with_model: KV self size  =    3.38 MiB, K (f16):    1.69 MiB, V (f16):    1.69 MiB
+llama_new_context_with_model:        CPU input buffer size   =     2.57 MiB
+llama_new_context_with_model:        CPU compute buffer size =    63.06 MiB
+llama_new_context_with_model: graph splits (measure): 1
+
+system_info: n_threads = 4 / 8 | AVX = 1 | AVX_VNNI = 0 | AVX2 = 1 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 1 | NEON = 0 | ARM_FMA = 0 | F16C = 1 | FP16_VA = 0 | WASM_SIMD = 0 | BLAS = 0 | SSE3 = 1 | SSSE3 = 1 | VSX = 0 | MATMUL_INT8 = 0 |
+sampling:
+        repeat_last_n = 64, repeat_penalty = 1.100, frequency_penalty = 0.000, presence_penalty = 0.000
+        top_k = 40, tfs_z = 1.000, top_p = 0.950, min_p = 0.050, typical_p = 1.000, temp = 0.700
+        mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000
+sampling order:
+CFG -> Penalties -> top_k -> tfs_z -> typical_p -> top_p -> min_p -> temperature
+generate: n_ctx = 512, n_batch = 512, n_predict = 128, n_keep = 1
+
+
+ สถานการณ์แรงงานประจำสัปดาห์   17 - 8 มี.ค. 2555 ที่ห้องประชุมศูนย์อำนวยการบริหารจังหวัดชายแดนภาคใต้ นายพลเดช ปิ่นประทีป ปลัดกร
+llama_print_timings:        load time =      13.39 ms
+llama_print_timings:      sample time =      34.48 ms /   128 runs   (    0.27 ms per token,  3712.84 tokens per second)
+llama_print_timings: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_print_timings:        eval time =     368.38 ms /   128 runs   (    2.88 ms per token,   347.47 tokens per second)
+llama_print_timings:       total time =     458.18 ms /   129 tokens
 Log end
 ```
