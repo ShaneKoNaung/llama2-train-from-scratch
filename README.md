@@ -153,6 +153,26 @@ dropout = 0.0
 
 ```
 
+## Models
+
+You should have `out.zip` and `out_thai.zip`. 
+Unzip those under `llama2-train-from-scratch` directory.
+
+Models are under folders starting with out*.
+```
+out
+├── ckpt.pt
+├── ggml-model-f32.gguf
+├── llama2c-ggml.bin
+├── model.bin
+└── params.json
+out_thai
+├── ckpt.pt
+├── ggml-model-f32.gguf
+├── llama2c-ggml.bin
+└── model.bin
+```
+
 ## Model Export
 
 ### Export to llama2.c format
@@ -177,24 +197,11 @@ python convert.py out_thai/ --ctx 4096
 
 ```
 
-## Models
-
-Models are under folders starting with out*.
-
-out
-├── ckpt.pt
-├── ggml-model-f32.gguf
-├── llama2c-ggml.bin
-├── model.bin
-└── params.json
-out_thai
-├── ckpt.pt
-├── ggml-model-f32.gguf
-├── llama2c-ggml.bin
-└── model.bin
 
 
 ## Text Generation
+
+
 
 ### Llama2 pytorch
 ```
