@@ -1,6 +1,5 @@
-.ipynb*
+.ipynb_checkpoints
 __*__
-*.ipynb
 *.bin
 *pt
 *.gguf
