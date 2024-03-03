@@ -6,7 +6,11 @@ The goal of this project is to learn about Llama2 architecture from Facebook, ru
 
 ## Setup
 
-## Prepare dataset
+## Dataset
+
+### Tiny Shakespeare
+
+#### Prepare dataset
 
 tiny shakespeare is a small dataset. The dataset is stored in `data/tinyshakespeare/input.txt`.
 
@@ -24,7 +28,7 @@ This step is just to load the dataset and look at it a bit.
 
 
 
-## Tokenization
+#### Tokenization
 
 
 ```
