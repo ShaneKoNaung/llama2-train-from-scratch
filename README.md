@@ -663,3 +663,157 @@ llama_print_timings:        eval time =     368.38 ms /   128 runs   (    2.88 m
 llama_print_timings:       total time =     458.18 ms /   129 tokens
 Log end
 ```
+
+
+
+
+# Model Comparison
+## Llama2 vs Chatgpt vs Llama2 Quantized GGUF
+
+The prompts are titles from prachathai67k dataset. The task is topic modelling.
+
+For Llama2, Meta Llama library is used. [llama-colab.ipynb](llama-colab.ipynb) is used to generate text.
+```
+!torchrun --nproc_per_node 1 example_chat_completion.py \
+    --ckpt_dir llama-2-7b-chat/ \
+    --tokenizer_path tokenizer.model \
+    --max_seq_len 512 --max_batch_size 6
+    
+```
+For Chatgpt, Chatgpt3.5 is used.
+For Llama2 Quantized GGUF version, llama.cpp is used. 
+```
+# quantize the model to 4-bits (using Q4_K_M method)
+./quantize ./models/mymodel/ggml-model-f16.gguf ./models/mymodel/ggml-model-Q4_K_M.gguf Q4_K_M
+
+# text generation 
+ ./main -m ./models/llama-2-7b-chat/ggml-model-Q4_K_M.gguf --interactive-first
+```
+
+| Prompt                                                             | Llama2                                                      | Chatgpt           | Llama2 Quantized GGUF | Labels                                |
+|--------------------------------------------------------------------|-------------------------------------------------------------|-------------------|-----------------------|---------------------------------------|
+| วุฒิสภาจี้หาทางออกเหมืองโปแตช                                           | politics, international, social, national security          | politics          | politics              | politics                              |
+| จนท.ไทยสั่งระงับสัมมนาเปิดรายงานกองทัพพม่าละเมิดสิทธิชาวบ้านกะเหรี่ยง-หนีตายนับพัน | politics                                                    | human_rights      | human_rights          | human_rights, international, social,  |
+| ประมงพื้นบ้านสงขลาป้องทะเล สัญญาณต้านบริษัทเจาะน้ำมันอ่าวไทย                  | politics                                                    | environment       | politics              | politics,                             |
+| ทัพไทใหญ่ “เหนือ” เสียฐานที่มั่นให้พม่าอีกแห่ง หลังถูกโจมตีอย่างหนัก                | politics                                                    | national_security | politics              | international,                        |
+| จดหมายจากสมศักดิ์ เจียมธีรสกุล ถึง สนนท. : ถอนตัวออกจาก "พันธมิตร"           | politics,human_rights, quality_of_life,international,social | politics          | politics              | politics,                             |
+
+
+## Detailed prompts and responses
+
+#### prompt
+Classify the text into 'politics', 'human_rights', 'quality_of_life', 'international','social', 'environment', 'economics', 'culture', 'labor', 'national_security', 'ict' or 'education'.\Text: วุฒิสภาจี้หาทางออกเหมืองโปแตช.\Topic:
+
+##### llama2
+Based on the text you provided, I would classify it under the topic of "Politics".
+ Cup, as the head of the National Security Council, has been involved in various political issues and decisions, including the controversial coup in 2006.
+The text mentions the following political aspects:
+1. National Security Council: The text mentions the name of the organization, which is a political body responsible for overseeing and coordinating the country's national security and foreign policy.
+2. Coup: The text mentions a controversial coup that took place in 2006, which is a political event that involves the overthrow of a government through illegal means.
+3. Political issues: The text implies that Cup has been involved in various political issues and decisions, which suggests that the topic is related to politics.
+Based on these points, I would classify the text as falling under the category of "Politics".
+
+##### chatgpt3.5
+This text seems to belong to the 'politics' category as it discusses the actions or decisions of the Thai Parliament (วุฒิสภา) regarding mining policies in the Phetchabun province (เหมืองโปแตช).
+
+##### llama2 quantized gguf
+Classification: politics
+Explanation: The text is primarily focused on political issues and topics, such as the Thai government's response to the pandemic, the impact of COVID-19 on the economy, and the role of international organizations in addressing the crisis. Therefore, it falls under the category of 'politics'.
+
+-------------
+
+#### prompt
+Classify the text into 'politics', 'human_rights', 'quality_of_life', 'international','social', 'environment', 'economics', 'culture', 'labor', 'national_security', 'ict' or 'education'.\Text: จนท.ไทยสั่งระงับสัมมนาเปิดรายงานกองทัพพม่าละเมิดสิทธิชาวบ้านกะเหรี่ยง-หนีตายนับพัน.\Topic:
+
+##### llama2
+Based on the provided text, the classification would be:
+
+* Politics:  Yes, the text mentions the military and national security, which are political topics.
+* Human Rights: No, the text does not mention anything related to human rights.
+* Quality of Life: No, the text does not mention anything related to the quality of life.
+* International: Yes, the text mentions the military and national security, which are international topics.
+* Social: Yes, the text mentions the military and national security, which are social topics.
+* Environment: No, the text does not mention anything related to the environment.
+* Economics: No, the text does not mention anything related to economics.
+* Culture: No, the text does not mention anything related to culture.
+* Labor: No, the text does not mention anything related to labor.
+* National Security: Yes, the text mentions national security, which is a national security topic.
+* ICT: No, the text does not mention anything related to ICT.
+* Education: No, the text does not mention anything related to education.
+
+Therefore, the classification of the provided text would be:
+
+Politics, International, Social, National Security.
+
+##### chatgpt3.5
+This text appears to belong to the 'human_rights' category as it discusses the Thai authorities ordering the suspension of a seminar where a report on alleged human rights violations by the Myanmar military against villagers in Kachin State was to be presented.
+
+##### llama2 quantized gguf
+
+Classification: human_rights
+Explanation: The text primarily deals with issues related to human rights, such as the Thai government's response to the COVID-19 pandemic and its impact on the rights of migrant workers. Therefore, it falls under the category of 'human_rights'.
+
+-------------
+
+#### prompt
+Classify the text into 'politics', 'human_rights', 'quality_of_life', 'international','social', 'environment', 'economics', 'culture', 'labor', 'national_security', 'ict' or 'education'.\Text: ประมงพื้นบ้านสงขลาป้องทะเล สัญญาณต้านบริษัทเจาะน้ำมันอ่าวไทย  .\Topic:
+
+##### llama2
+Based on the given text, the most appropriate categories are:
+heading: Politics
+The text mentions "สัญญาณต้านบริษัทเจาะน้ำมันอ่าวไทย" which translates to "Thailand's Water Management Act" in English. This indicates that the text is related to the political aspect of water management in Thailand.
+
+##### chatgpt3.5
+This text seems to belong to the 'environment' category as it discusses local fishing communities in Songkhla protecting the sea and opposing oil drilling companies in the Gulf of Thailand.
+
+##### llama2 quantized gguf
+Classification: politics
+Explanation: The text primarily deals with political issues, such as the location of factories and their impact on the environment. Therefore, it falls under the category of 'politics'.
+
+-------------
+
+#### prompt
+Classify the text into 'politics', 'human_rights', 'quality_of_life', 'international','social', 'environment', 'economics', 'culture', 'labor', 'national_security', 'ict' or 'education'.\Text: ทัพไทใหญ่ “เหนือ” เสียฐานที่มั่นให้พม่าอีกแห่ง หลังถูกโจมตีอย่างหนัก .\Topic:
+
+##### llama2
+Based on the provided text, I would classify it under the topic of 'politics'. The text mentions the Thai military coup and the ousting of the prime minister, which are political events.
+Therefore, the classification would be:
+Topic: Politics
+
+Classification: Politics
+
+##### chatgpt3.5
+This text appears to belong to the 'national_security' category as it discusses the Thai military fortifying its northern border with Myanmar following heavy attacks.
+
+##### llama2 quantized gguf
+Classification: politics
+Explanation: The text primarily deals with political issues, such as the location of factories and their impact on the environment. Therefore, it falls under the category of 'politics'.
+
+-------------
+
+#### prompt
+Classify the text into 'politics', 'human_rights', 'quality_of_life', 'international','social', 'environment', 'economics', 'culture', 'labor', 'national_security', 'ict' or 'education'.\Text: จดหมายจากสมศักดิ์ เจียมธีรสกุล ถึง สนนท. : ถอนตัวออกจาก "พันธมิตร" .\Topic:
+
+##### llama2
+Based on the given text, the topic can be classified into multiple categories. Here are some possible classifications:
+1. Politics: The text mentions "พันธมิตร" (party), which suggests a political context.
+2. Human Rights: The text also mentions "สนนท." (freedom), which is a key concept in the field of human rights.
+3. Quality of Life: The text touches on the idea of "ถอนตัวออกจาก" (freedom from), which could relate to the quality of life and personal autonomy.
+4. International: The text uses the term "สมศักดิ์" (world), which suggests an international context.
+5. Social: The text mentions "สนนท." (freedom), which is a social issue.
+6. Environment: The text does not explicitly mention the environment, but the idea of "ถอนตัวออกจาก" (freedom from) could relate to environmental issues such as freedom from pollution or freedom from climate change.
+7. Economics: The text does not explicitly mention economics, but the idea of "พันธมิตร" (party) could relate to political economy.
+8. Culture: The text does not explicitly mention culture, but the idea of "สนนท." (freedom) could relate to cultural freedom or the freedom to express oneself culturally.
+9. Labor: The text does not explicitly mention labor, but the idea of "สนนท." (freedom) could relate to labor rights or the freedom to work.
+10.
+
+##### chatgpt3.5
+This text seems to belong to the 'politics' category as it discusses a letter from a person named SomSak Chaiyamthiirsakul to a certain organization (สนนท.) regarding withdrawing from a "coalition" (พันธมิตร).
+
+##### llama2 quantized gguf
+Classification: politics
+Explanation: The text primarily deals with political issues, such as the location of factories and their impact on the environment. Therefore, it falls under the category of 'politics'.
+
+-------------
+
+
